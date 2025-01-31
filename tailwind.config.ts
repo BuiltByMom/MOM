@@ -7,6 +7,11 @@ export default {
 		'./app/**/*.{js,ts,jsx,tsx,mdx}'
 	],
 	theme: {
+		colors: {
+			primary: '#FFD915',
+			black: '#0C0C0C',
+			white: '#ffffff'
+		},
 		extend: {
 			colors: {
 				background: 'var(--background)',
