@@ -39,8 +39,8 @@ export function MobileMenu(): ReactNode {
 		'items-start',
 		'p-8 pt-32',
 		'md:hidden',
-		'transition-opacity delay-300 duration-300',
-		isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+		'transition-opacity duration-300',
+		isOpen ? 'opacity-100 delay-300' : 'pointer-events-none opacity-0 delay-0'
 	].join(' ');
 
 	return (
