@@ -15,7 +15,7 @@ export const NAV_ITEMS = [
 export function Header(): ReactNode {
 	return (
 		<div>
-			<nav className={'relative z-10 mx-auto flex h-[128px] max-w-[1200px] items-center justify-between px-6'}>
+			<nav className={'relative z-10 mx-auto flex h-[128px] max-w-[1400px] items-center justify-between px-6'}>
 				<Link
 					href={'/'}
 					className={'z-50'}>

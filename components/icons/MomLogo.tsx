@@ -3,12 +3,12 @@ import type {ReactNode} from 'react';
 export function MomLogo({...props}: React.SVGProps<SVGSVGElement>): ReactNode {
 	return (
 		<svg
-			{...props}
 			width={'70'}
 			height={'17'}
 			viewBox={'0 0 70 17'}
 			fill={'none'}
-			xmlns={'http://www.w3.org/2000/svg'}>
+			xmlns={'http://www.w3.org/2000/svg'}
+			{...props}>
 			<path
 				d={
 					'M69.2065 0.613342V16.1883H63.4215V8.77909L59.1717 16.1883H55.3892L51.1395 8.77909V16.1883H45.3545V0.613342H52.4745L57.2805 9.51334L62.0865 0.613342H69.2065Z'

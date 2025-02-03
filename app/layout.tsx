@@ -1,7 +1,8 @@
-import GridBackground from './components/common/GridBackground';
-import {Header} from './components/common/Header';
-import {WithFonts} from './components/common/WithFonts';
+import {Footer} from '@/components/common/Footer';
+
 import './globals.css';
+import {Header} from '../components/common/Header';
+import {WithFonts} from '../components/common/WithFonts';
 
 import type {Metadata} from 'next';
 import type {ReactNode} from 'react';
@@ -21,8 +22,8 @@ export default function RootLayout({
 			<body className={'bg-white text-black antialiased'}>
 				<WithFonts>
 					<Header />
-					<GridBackground />
 					{children}
+					<Footer />
 				</WithFonts>
 			</body>
 		</html>
