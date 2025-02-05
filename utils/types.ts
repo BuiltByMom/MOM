@@ -5,4 +5,5 @@ export type TProject = {
 	image?: string;
 	tags: string[];
 	backgroundColor?: string; // For different background colors like black, blue, purple
+	slug: string;
 };

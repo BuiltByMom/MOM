@@ -1,8 +1,6 @@
-import {Footer} from '@/components/common/Footer';
+import {RootWrapper} from '@/components/common/RootWrapper';
 
 import './globals.css';
-import {Header} from '../components/common/Header';
-import {WithFonts} from '../components/common/WithFonts';
 
 import type {Metadata} from 'next';
 import type {ReactNode} from 'react';
@@ -20,11 +18,7 @@ export default function RootLayout({
 	return (
 		<html lang={'en'}>
 			<body className={'bg-white text-black antialiased'}>
-				<WithFonts>
-					<Header />
-					{children}
-					<Footer />
-				</WithFonts>
+				<RootWrapper>{children}</RootWrapper>
 			</body>
 		</html>
 	);

@@ -9,8 +9,11 @@ import type {ReactNode} from 'react';
 
 export function Footer(): ReactNode {
 	return (
-		<footer className={'mt-auto flex h-[140px] w-full items-center justify-between bg-primary px-10'}>
-			<div className={'flex gap-1'}>
+		<footer
+			className={
+				'mt-auto flex h-[140px] w-full items-center justify-between bg-primary px-10 max-md:justify-center'
+			}>
+			<div className={'flex gap-1 max-md:hidden'}>
 				{NAV_ITEMS.map(({title, href}) => (
 					<NavItem
 						key={title}
@@ -19,14 +22,17 @@ export function Footer(): ReactNode {
 					/>
 				))}
 			</div>
-			<div className={'flex items-center gap-20'}>
+			<div className={'flex items-center gap-20 '}>
 				<Image
+					className={'max-md:hidden'}
 					src={'/images/mom.png'}
 					alt={'Mom'}
 					width={140}
 					height={140}
 				/>
-				<Link href={'mailto:hello@dad.mom '}>
+				<Link
+					href={'mailto:hello@dad.mom'}
+					className={'max-md:mx-auto'}>
 					<div className={'group flex items-center gap-2'}>
 						<p className={'text-2xl font-extrabold group-hover:underline'}>{'hello@dad.'}</p>
 						<div

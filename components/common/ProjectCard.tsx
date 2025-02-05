@@ -1,12 +1,24 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import {useRef, useState} from 'react';
 
 import type {TProject} from '@/utils/types';
 import type {ReactNode} from 'react';
 
-export function ProjectCard({title, subtitle, video, image, tags}: TProject): ReactNode {
+type TProjectCard = TProject & {overlayColor?: string; overlayColorHover?: string; href: string};
+
+export function ProjectCard({
+	title,
+	subtitle,
+	video,
+	image,
+	tags,
+	href,
+	overlayColor = 'black/0',
+	overlayColorHover = 'black/25'
+}: TProjectCard): ReactNode {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [isHovering, setIsHovering] = useState(false);
 
@@ -25,18 +37,18 @@ export function ProjectCard({title, subtitle, video, image, tags}: TProject): Re
 		setIsHovering(false);
 	};
 
+	const overlayClassname = `max-md:hidden absolute inset-0 size-full transition-all duration-300$ bg-${overlayColor} group-hover:bg-${overlayColorHover} `;
 	return (
-		<div
+		<Link
+			href={href}
+			target={'_blank'}
 			className={
 				'group relative w-full cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[0.98]'
 			}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
-			<div
-				className={
-					'-z-100 absolute inset-0 size-full bg-black/0 transition-all duration-300 group-hover:bg-black/25'
-				}
-			/>
+			<div className={overlayClassname} />
+
 			<div className={'z-30'}>
 				{/* Video */}
 				{video && (
@@ -66,11 +78,18 @@ export function ProjectCard({title, subtitle, video, image, tags}: TProject): Re
 				{isHovering && (
 					<button
 						className={
-							'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/5 bg-white/15 p-6 text-white backdrop-blur-[32px]'
+							'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/5 bg-white/15 p-6 text-white backdrop-blur-[32px] max-md:hidden'
 						}>
 						<span className={'font-extrabold'}>{'NEXT PROJECT'}</span>
 					</button>
 				)}
+
+				<button
+					className={
+						'absolute right-6 top-6 rounded-2xl border border-white/5 bg-white/15 px-6 py-3 text-white backdrop-blur-[32px] md:hidden'
+					}>
+					<span className={'text-xs font-extrabold'}>{'NEXT PROJECT'}</span>
+				</button>
 
 				{/* Bottom Content Overlay */}
 				<div
@@ -88,7 +107,7 @@ export function ProjectCard({title, subtitle, video, image, tags}: TProject): Re
 						{tags.map(tag => (
 							<span
 								key={tag}
-								className={'rounded-md bg-white/10 px-3 py-1 text-sm font-medium text-white'}>
+								className={'rounded-md bg-white/10 px-3 py-1 text-sm font-bold text-white'}>
 								{'#'}
 								{tag.toUpperCase()}
 							</span>
@@ -96,6 +115,6 @@ export function ProjectCard({title, subtitle, video, image, tags}: TProject): Re
 					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 }
