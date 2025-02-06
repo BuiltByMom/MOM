@@ -2,12 +2,17 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import type {TProject} from '@/utils/types';
 import type {ReactNode} from 'react';
 
-type TProjectCard = TProject & {overlayColor?: string; overlayColorHover?: string; href: string};
+type TProjectCard = TProject & {
+	overlayColor?: string;
+	overlayColorHover?: string;
+	href: string;
+	target?: '_blank' | '_self';
+};
 
 export function ProjectCard({
 	title,
@@ -16,15 +21,35 @@ export function ProjectCard({
 	image,
 	tags,
 	href,
+	target = '_self',
 	overlayColor = 'black/0',
 	overlayColorHover = 'black/25'
 }: TProjectCard): ReactNode {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [isHovering, setIsHovering] = useState(false);
 
-	const handleMouseEnter = (): void => {
+	// Clean up video playback
+	useEffect(() => {
+		const videoElement = videoRef.current;
+		return () => {
+			if (videoElement) {
+				videoElement.pause();
+				videoElement.currentTime = 0;
+			}
+		};
+	}, []);
+
+	const handleMouseEnter = async (): Promise<void> => {
 		if (videoRef.current) {
-			videoRef.current.play();
+			try {
+				// Using await to handle the play promise
+				await videoRef.current.play();
+			} catch (error) {
+				// Ignore abort errors when quickly hovering in/out
+				if (error instanceof Error && error.name !== 'AbortError') {
+					console.error('Video playback error:', error);
+				}
+			}
 		}
 		setIsHovering(true);
 	};
@@ -32,16 +57,14 @@ export function ProjectCard({
 	const handleMouseLeave = (): void => {
 		if (videoRef.current) {
 			videoRef.current.pause();
-			videoRef.current.currentTime = 0;
 		}
 		setIsHovering(false);
 	};
-
 	const overlayClassname = `max-md:hidden absolute inset-0 size-full transition-all duration-300$ bg-${overlayColor} group-hover:bg-${overlayColorHover} `;
 	return (
 		<Link
 			href={href}
-			target={'_blank'}
+			target={target}
 			className={
 				'group relative w-full cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[0.98]'
 			}

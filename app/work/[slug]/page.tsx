@@ -90,6 +90,7 @@ export default function WorkPage({params}: {params: {slug: string}}): ReactNode 
 					href={content.projectLink}
 					overlayColor={'primary/75'}
 					overlayColorHover={'primary/0'}
+					target={'_blank'}
 				/>
 			)}
 		</div>
