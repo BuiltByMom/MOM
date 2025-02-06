@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useRef} from 'react';
 
-import {cn} from '@/utils';
+import {cl} from '@/utils';
 
 import type {TProject} from '@/utils/types';
 import type {ReactNode} from 'react';
@@ -71,7 +71,7 @@ export function ProjectCard({
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
 			<div
-				className={cn(
+				className={cl(
 					'absolute inset-0 size-full transition-all duration-300 max-md:hidden',
 					overlayColor,
 					overlayColorHover
