@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useRef} from 'react';
 
+import {cn} from '@/utils';
+
 import type {TProject} from '@/utils/types';
 import type {ReactNode} from 'react';
 
@@ -24,8 +26,8 @@ export function ProjectCard({
 	href,
 	hoverButtonTitle = 'View case study',
 	target = '_self',
-	overlayColor = 'black/0',
-	overlayColorHover = 'black/25'
+	overlayColor = 'bg-black/0',
+	overlayColorHover = 'group-hover:bg-black/25'
 }: TProjectCard): ReactNode {
 	const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -59,8 +61,6 @@ export function ProjectCard({
 			videoRef.current.pause();
 		}
 	};
-
-	const overlayClassname = `max-md:hidden absolute inset-0 size-full transition-all duration-300$ bg-${overlayColor} group-hover:bg-${overlayColorHover} `;
 	return (
 		<Link
 			href={href}
@@ -70,7 +70,13 @@ export function ProjectCard({
 			}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
-			<div className={overlayClassname} />
+			<div
+				className={cn(
+					'absolute inset-0 size-full transition-all duration-300',
+					overlayColor,
+					overlayColorHover
+				)}
+			/>
 
 			<div className={'z-30'}>
 				{/* Video */}

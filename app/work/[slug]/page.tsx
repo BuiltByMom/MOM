@@ -90,8 +90,8 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 				<ProjectCard
 					{...projectCardContent}
 					href={content.projectLink}
-					overlayColor={'primary/75'}
-					overlayColorHover={'primary/0'}
+					overlayColor={'bg-primary/75'}
+					overlayColorHover={'group-hover:bg-primary/0'}
 					target={'_blank'}
 					hoverButtonTitle={'NEXT PROJECT'}
 				/>
