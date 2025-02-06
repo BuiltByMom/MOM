@@ -12,6 +12,7 @@ type TProjectCard = TProject & {
 	overlayColorHover?: string;
 	href: string;
 	target?: '_blank' | '_self';
+	hoverButtonTitle?: string;
 };
 
 export function ProjectCard({
@@ -21,6 +22,7 @@ export function ProjectCard({
 	image,
 	tags,
 	href,
+	hoverButtonTitle = 'View case study',
 	target = '_self',
 	overlayColor = 'black/0',
 	overlayColorHover = 'black/25'
@@ -96,16 +98,13 @@ export function ProjectCard({
 						className={'h-[480px] w-full object-cover'}
 					/>
 				)}
-
 				{/* Hover button */}
-				{isHovering && (
-					<button
-						className={
-							'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/5 bg-white/15 p-6 text-white backdrop-blur-[32px] max-md:hidden'
-						}>
-						<span className={'font-extrabold'}>{'NEXT PROJECT'}</span>
-					</button>
-				)}
+				<button
+					className={
+						'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/5 bg-white/15 p-6 text-white opacity-0 backdrop-blur-[32px] transition-opacity group-hover:opacity-100 max-md:hidden'
+					}>
+					<span className={'font-extrabold'}>{hoverButtonTitle.toUpperCase()}</span>
+				</button>
 
 				<button
 					className={

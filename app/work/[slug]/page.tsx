@@ -54,7 +54,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					</div>
 				)}
 
-				<div className={'mt-1 grid grid-cols-12 grid-rows-2 gap-1 max-md:block md:mt-10 '}>
+				<div className={'mb-[120px] mt-1 grid grid-cols-12 grid-rows-2 gap-1 max-md:block'}>
 					<div className={'col-span-12 max-md:mb-1'}>
 						<Image
 							key={content.images[0]}
@@ -66,6 +66,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					</div>
 					<div className={'col-span-6 row-start-2 max-md:mb-1'}>
 						<Image
+							className={'size-full object-cover'}
 							key={content.images[1]}
 							src={content.images[1]}
 							alt={content.title}
@@ -75,6 +76,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					</div>
 					<div className={'col-span-6 col-start-7 row-start-2 max-md:mb-1'}>
 						<Image
+							className={'size-full object-cover'}
 							key={content.images[2]}
 							src={content.images[2]}
 							alt={content.title}
@@ -91,6 +93,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					overlayColor={'primary/75'}
 					overlayColorHover={'primary/0'}
 					target={'_blank'}
+					hoverButtonTitle={'NEXT PROJECT'}
 				/>
 			)}
 		</div>
