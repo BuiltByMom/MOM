@@ -39,7 +39,10 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 			<div className={'mt-10 md:mt-40'}>
 				{content?.video && (
 					<div className={'relative aspect-video'}>
-						<video controls>
+						<video
+							controls
+							width={'100%'}
+							height={'100%'}>
 							<source
 								src={`https://res.cloudinary.com/dgdiddssb/video/upload/v1738602673/${content.video}.mp4`}
 								type={'video/mp4'}
@@ -54,7 +57,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					</div>
 				)}
 
-				<div className={'mb-[120px] mt-1 grid grid-cols-12 grid-rows-2 gap-1 max-md:block'}>
+				<div className={'mt-1 grid grid-cols-12 grid-rows-2 gap-1 max-md:block md:mb-[120px]'}>
 					<div className={'col-span-12 max-md:mb-1'}>
 						<Image
 							key={content.images[0]}

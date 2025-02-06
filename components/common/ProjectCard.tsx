@@ -72,7 +72,7 @@ export function ProjectCard({
 			onMouseLeave={handleMouseLeave}>
 			<div
 				className={cn(
-					'absolute inset-0 size-full transition-all duration-300',
+					'absolute inset-0 size-full transition-all duration-300 max-md:hidden',
 					overlayColor,
 					overlayColorHover
 				)}
@@ -83,7 +83,7 @@ export function ProjectCard({
 				{video && (
 					<video
 						ref={videoRef}
-						className={'size-full max-h-[480px] object-cover'}
+						className={'size-full h-[480px] object-cover'}
 						src={`https://res.cloudinary.com/dgdiddssb/video/upload/v1738602673/${video}.mp4`}
 						playsInline
 						muted
