@@ -7,8 +7,8 @@ import {PROJECTS} from '../page';
 
 import type {ReactNode} from 'react';
 
-export default function WorkPage({params}: {params: {slug: string}}): ReactNode {
-	const {slug} = params;
+export default async function WorkPage({params}: {params: Promise<{slug: string}>}): Promise<ReactNode> {
+	const {slug} = await params;
 	const content = CASE_CONTENT[slug as keyof typeof CASE_CONTENT];
 	const projectCardContent = PROJECTS.find(project => project.slug === slug);
 
