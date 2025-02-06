@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 
 import type {TProject} from '@/utils/types';
 import type {ReactNode} from 'react';
@@ -28,7 +28,6 @@ export function ProjectCard({
 	overlayColorHover = 'black/25'
 }: TProjectCard): ReactNode {
 	const videoRef = useRef<HTMLVideoElement>(null);
-	const [isHovering, setIsHovering] = useState(false);
 
 	// Clean up video playback
 	useEffect(() => {
@@ -53,15 +52,14 @@ export function ProjectCard({
 				}
 			}
 		}
-		setIsHovering(true);
 	};
 
 	const handleMouseLeave = (): void => {
 		if (videoRef.current) {
 			videoRef.current.pause();
 		}
-		setIsHovering(false);
 	};
+
 	const overlayClassname = `max-md:hidden absolute inset-0 size-full transition-all duration-300$ bg-${overlayColor} group-hover:bg-${overlayColorHover} `;
 	return (
 		<Link
