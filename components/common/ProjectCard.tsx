@@ -66,24 +66,24 @@ export function ProjectCard({
 			href={href}
 			target={target}
 			className={
-				'group relative w-full cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[0.98]'
+				'group relative size-full cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[0.98]'
 			}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
 			<div
 				className={cl(
-					'absolute inset-0 size-full transition-all duration-300 max-md:hidden',
+					'absolute inset-0 size-full max-md:aspect-square transition-all duration-300 max-md:hidden',
 					overlayColor,
 					overlayColorHover
 				)}
 			/>
 
-			<div className={'z-30'}>
+			<div className={'z-30 h-full'}>
 				{/* Video */}
 				{video && (
 					<video
 						ref={videoRef}
-						className={'size-full h-[480px] object-cover'}
+						className={'size-full object-cover max-md:aspect-square'}
 						src={`https://res.cloudinary.com/dgdiddssb/video/upload/v1738602673/${video}.mp4`}
 						playsInline
 						muted
@@ -99,7 +99,7 @@ export function ProjectCard({
 						alt={title}
 						width={1400}
 						height={480}
-						className={'h-[480px] w-full object-cover'}
+						className={'size-full object-cover max-md:aspect-square'}
 					/>
 				)}
 				{/* Hover button */}
@@ -120,7 +120,7 @@ export function ProjectCard({
 				{/* Bottom Content Overlay */}
 				<div
 					className={
-						'justify-start-start absolute inset-x-0 bottom-0 flex flex-col justify-between gap-4 p-6 md:flex-row'
+						'justify-start-start absolute inset-x-0 bottom-0 flex flex-col flex-wrap justify-between gap-4 overflow-hidden p-6 md:flex-row'
 					}>
 					{/* Title Area */}
 					<div className={'flex items-center gap-2 text-white'}>

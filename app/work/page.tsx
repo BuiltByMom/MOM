@@ -59,11 +59,14 @@ export default function Work(): ReactNode {
 				<h1 className={'mb-8 text-[40px] font-semibold leading-10'}>{'FEATURED PROJECTS'}</h1>
 				<div className={'flex w-full flex-col gap-1'}>
 					{PROJECTS.map(project => (
-						<ProjectCard
+						<div
 							key={`${project.title}-${project.subtitle}`}
-							{...project}
-							href={`/work/${project.slug}`}
-						/>
+							className={'h-[480px]'}>
+							<ProjectCard
+								{...project}
+								href={`/work/${project.slug}`}
+							/>
+						</div>
 					))}
 				</div>
 			</main>
