@@ -15,6 +15,7 @@ type TProjectCard = TProject & {
 	href: string;
 	target?: '_blank' | '_self';
 	hoverButtonTitle?: string;
+	animateText?: boolean;
 };
 
 export function ProjectCard({
@@ -27,7 +28,8 @@ export function ProjectCard({
 	hoverButtonTitle = 'View case study',
 	target = '_self',
 	overlayColor = 'bg-black/0',
-	overlayColorHover = 'group-hover:bg-black/25'
+	overlayColorHover = 'group-hover:bg-black/25',
+	animateText = true
 }: TProjectCard): ReactNode {
 	const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -65,9 +67,7 @@ export function ProjectCard({
 		<Link
 			href={href}
 			target={target}
-			className={
-				'group relative size-full cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[0.98]'
-			}
+			className={'group relative size-full cursor-pointer overflow-hidden'}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
 			<div
@@ -78,12 +78,14 @@ export function ProjectCard({
 				)}
 			/>
 
-			<div className={'z-30 h-full'}>
+			<div className={'z-30 h-full overflow-hidden'}>
 				{/* Video */}
 				{video && (
 					<video
 						ref={videoRef}
-						className={'size-full object-cover max-md:aspect-square'}
+						className={
+							'size-full scale-[1.10] object-cover transition-all duration-300 group-hover:scale-100 max-md:aspect-square'
+						}
 						src={`https://res.cloudinary.com/dgdiddssb/video/upload/v1738602673/${video}.mp4`}
 						playsInline
 						muted
@@ -99,7 +101,9 @@ export function ProjectCard({
 						alt={title}
 						width={1400}
 						height={480}
-						className={'size-full object-cover max-md:aspect-square'}
+						className={
+							'size-full scale-[1.10] object-cover transition-all duration-300 group-hover:scale-100 max-md:aspect-square'
+						}
 					/>
 				)}
 				{/* Hover button */}
@@ -119,17 +123,26 @@ export function ProjectCard({
 
 				{/* Bottom Content Overlay */}
 				<div
-					className={
-						'justify-start-start absolute inset-x-0 bottom-0 flex flex-col flex-wrap justify-between gap-4 overflow-hidden p-6 md:flex-row'
-					}>
+					className={cl(
+						'absolute inset-x-0 bottom-0 flex flex-col flex-wrap justify-between gap-4 overflow-hidden p-6 transition-transform duration-300  md:flex-row',
+						animateText ? 'group-hover:translate-y-[-10px]' : ''
+					)}>
 					{/* Title Area */}
-					<div className={'flex items-center gap-2 text-white'}>
+					<div
+						className={cl(
+							'flex items-center gap-2 text-white transition-transform duration-300',
+							animateText ? 'group-hover:translate-x-[10px]' : ''
+						)}>
 						<span className={'font-[Monument] text-xl font-extrabold'}>{title}</span>
 						{subtitle && <span className={'text-xl font-normal tracking-wide'}>{subtitle}</span>}
 					</div>
 
 					{/* Tags */}
-					<div className={'flex gap-2'}>
+					<div
+						className={cl(
+							'flex gap-2 transition-transform duration-300',
+							animateText ? 'group-hover:translate-x-[-10px]' : ''
+						)}>
 						{tags.map(tag => (
 							<span
 								key={tag}

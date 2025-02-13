@@ -10,6 +10,7 @@ type TProject = {
 	slug: string;
 	video?: string;
 	className?: string;
+	animateText?: boolean;
 };
 
 const GRID_PROJECTS: TProject[] = [
@@ -82,21 +83,24 @@ const MORE_PROJECTS: TProject[] = [
 		title: 'YEARN',
 		tags: ['marketing', 'development', 'design'],
 		image: '/images/yearn.png',
-		slug: 'yearn'
+		slug: 'yearn',
+		animateText: false
 	},
 	{
 		title: 'JUMPER',
 		subtitle: 'WRAPPED',
 		tags: ['marketing', 'development', 'design'],
 		image: '/images/jumper-wrapped.png',
-		slug: 'jumperWrapped'
+		slug: 'jumperWrapped',
+		animateText: false
 	},
 	{
 		title: 'JUMPER',
 		subtitle: 'WASH TRADE',
 		tags: ['marketing', 'development', 'design'],
 		image: '/images/jumper-wash-trade.png',
-		slug: 'washTrade'
+		slug: 'washTrade',
+		animateText: false
 	}
 ];
 export default function Work(): ReactNode {
