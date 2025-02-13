@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import {CASE_CONTENT} from '@/utils/constants';
 
@@ -9,7 +10,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 	const content = CASE_CONTENT[slug as keyof typeof CASE_CONTENT];
 
 	return (
-		<div className={'mx-auto mt-8 max-w-[1400px] px-6 pb-[120px]'}>
+		<div className={'mx-auto mt-8 max-w-[1400px] px-6 pb-[400px]'}>
 			<div className={'grid grid-cols-12 max-md:grid-cols-1'}>
 				<div className={'col-span-7'}>
 					<p className={'mb-4 text-xl font-semibold'}>{content.subtitle.toUpperCase()}</p>
@@ -85,16 +86,28 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					</div>
 				</div>
 			</div>
-			{/* {projectCardContent && (
-				<ProjectCard
-					{...projectCardContent}
-					href={content.projectLink}
-					overlayColor={'bg-primary/75'}
-					overlayColorHover={'group-hover:bg-primary/0'}
-					target={'_blank'}
-					hoverButtonTitle={'NEXT PROJECT'}
-				/>
-			)} */}
+			<div>
+				<div className={'mb-10 flex justify-between'}>
+					<p className={'text-[64px] font-semibold leading-[64px]'}>{'CONTACT US'}</p>
+					<Link
+						href={'/work'}
+						className={'max-w-[172px] text-3xl font-semibold hover:underline'}>
+						{'BACK TO PROJECTS'}
+					</Link>
+				</div>
+				<div className={'w-full max-w-[220px] text-right'}>
+					<Link
+						href={'mailto:hello@dad.mom'}
+						className={'hover:underline'}>
+						<p className={'mb-8 text-2xl font-extrabold '}>{'HELLO@DAD.MOM'}</p>
+					</Link>
+					<Link
+						href={'https://t.me/saltyfacu'}
+						className={'hover:underline'}>
+						<p className={'text-2xl font-extrabold'}>{'TELEGRAM LINK'}</p>
+					</Link>
+				</div>
+			</div>
 		</div>
 	);
 }
