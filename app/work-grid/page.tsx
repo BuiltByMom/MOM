@@ -12,7 +12,7 @@ type TProject = {
 	className?: string;
 };
 
-const PROJECTS: TProject[] = [
+const GRID_PROJECTS: TProject[] = [
 	{
 		title: 'JUMPER',
 		subtitle: 'WASH TRADE',
@@ -105,7 +105,7 @@ export default function Work(): ReactNode {
 			<main className={'relative mx-auto mt-8 max-w-[1400px] px-6 pb-[120px]'}>
 				<h1 className={'mb-8 text-[40px] font-semibold leading-10'}>{'FEATURED PROJECTS'}</h1>
 				<div className={'grid h-full grid-cols-1 gap-1 md:max-h-[2600px] md:grid-cols-2 md:grid-rows-8'}>
-					{PROJECTS.map((project, index) => (
+					{GRID_PROJECTS.map((project, index) => (
 						<div
 							key={index}
 							className={project.className}>
