@@ -28,7 +28,7 @@ export function Header(): ReactNode {
 						</div>
 					</div>
 				</Link>
-				<div className={'hidden gap-8 md:flex'}>
+				<div className={'hidden gap-1 md:flex'}>
 					{NAV_ITEMS.map(({title, href}) => (
 						<NavItem
 							key={title}
