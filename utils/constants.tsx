@@ -1,3 +1,4 @@
+import type {TProject} from './types';
 import type {ReactNode} from 'react';
 
 type TContent = {
@@ -185,3 +186,44 @@ export const CASE_CONTENT: Record<string, TContent> = {
 		projectLink: 'https://x.com/built_by_mom'
 	}
 };
+
+export const PROJECTS_LIST: TProject[] = [
+	{
+		title: 'JUMPER',
+		subtitle: 'WASH TRADE',
+		tags: ['marketing', 'development', 'design'],
+		image: '/images/jumper-wash-trade.png',
+		slug: 'washTrade'
+	},
+	{
+		title: 'FRIEND TECH',
+		tags: ['marketing'],
+		video: 'FriendTech_teaser_v1_xxnt5t',
+		slug: 'friendTech'
+	},
+	{
+		title: 'YEARN',
+		tags: ['marketing', 'development', 'design'],
+		image: '/images/yearn.png',
+		slug: 'yearn'
+	},
+	{
+		title: 'JUMPER',
+		subtitle: 'WRAPPED',
+		tags: ['marketing', 'development', 'design'],
+		image: '/images/jumper-wrapped.png',
+		slug: 'jumperWrapped'
+	},
+	{
+		title: 'POLYGON',
+		tags: ['marketing'],
+		video: 'In_future_we_bridge_Polygon__v1_bqg0gv',
+		slug: 'polygon'
+	},
+	{
+		title: 'MOM',
+		tags: ['marketing'],
+		video: 'CT_AI_edit_v1_pggwtw',
+		slug: 'mom'
+	}
+];
