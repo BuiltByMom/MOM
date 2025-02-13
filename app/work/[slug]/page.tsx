@@ -87,11 +87,11 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 				</div>
 			</div>
 			<div>
-				<div className={'mb-10 flex justify-between'}>
+				<div className={'relative flex justify-between'}>
 					<p className={'text-[64px] font-semibold leading-[64px]'}>{'CONTACT US'}</p>
 					<Link
 						href={'/work'}
-						className={'max-w-[172px] text-3xl font-semibold hover:underline'}>
+						className={'mt-8 max-w-[172px] text-3xl font-semibold hover:underline'}>
 						{'BACK TO PROJECTS'}
 					</Link>
 				</div>
