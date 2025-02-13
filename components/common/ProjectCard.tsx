@@ -10,12 +10,9 @@ import type {TProject} from '@/utils/types';
 import type {ReactNode} from 'react';
 
 type TProjectCard = TProject & {
-	overlayColor?: string;
-	overlayColorHover?: string;
 	href: string;
 	target?: '_blank' | '_self';
 	hoverButtonTitle?: string;
-	animateText?: boolean;
 };
 
 export function ProjectCard({
@@ -26,10 +23,7 @@ export function ProjectCard({
 	tags,
 	href,
 	hoverButtonTitle = 'View case study',
-	target = '_self',
-	overlayColor = 'bg-black/0',
-	overlayColorHover = 'group-hover:bg-black/25',
-	animateText = true
+	target = '_self'
 }: TProjectCard): ReactNode {
 	const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -72,9 +66,7 @@ export function ProjectCard({
 			onMouseLeave={handleMouseLeave}>
 			<div
 				className={cl(
-					'absolute inset-0 size-full max-md:aspect-square transition-all duration-300 max-md:hidden',
-					overlayColor,
-					overlayColorHover
+					'absolute inset-0 size-full z-10 max-md:aspect-square transition-all duration-300 max-md:hidden bg-black/0 group-hover:bg-black/25'
 				)}
 			/>
 
@@ -84,7 +76,7 @@ export function ProjectCard({
 					<video
 						ref={videoRef}
 						className={
-							'size-full scale-[1.10] object-cover transition-all duration-300 group-hover:scale-100 max-md:aspect-square'
+							'size-full scale-[1.10] object-cover transition-all duration-300 max-md:aspect-square md:group-hover:scale-100'
 						}
 						src={`https://res.cloudinary.com/dgdiddssb/video/upload/v1738602673/${video}.mp4`}
 						playsInline
@@ -102,14 +94,14 @@ export function ProjectCard({
 						width={1400}
 						height={480}
 						className={
-							'size-full scale-[1.10] object-cover transition-all duration-300 group-hover:scale-100 max-md:aspect-square'
+							'size-full scale-[1.10] object-cover transition-all duration-300 max-md:aspect-square md:group-hover:scale-100'
 						}
 					/>
 				)}
 				{/* Hover button */}
 				<button
 					className={
-						'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/5 bg-white/15 p-6 text-white opacity-0 backdrop-blur-[32px] transition-opacity group-hover:opacity-100 max-md:hidden'
+						'absolute left-1/2 top-1/2  z-20 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-white/5 bg-white/15 px-4 py-2 text-sm text-white opacity-0 backdrop-blur-[32px] transition-opacity group-hover:opacity-100 max-md:hidden'
 					}>
 					<span className={'font-extrabold'}>{hoverButtonTitle.toUpperCase()}</span>
 				</button>
@@ -124,25 +116,16 @@ export function ProjectCard({
 				{/* Bottom Content Overlay */}
 				<div
 					className={cl(
-						'absolute inset-x-0 bottom-0 flex flex-col flex-wrap justify-between gap-4 overflow-hidden p-6 transition-transform duration-300  md:flex-row',
-						animateText ? 'group-hover:translate-y-[-10px]' : ''
+						'absolute inset-x-0 z-20 bottom-0 flex flex-col origin-[50%_50%] flex-wrap justify-between gap-4 overflow-hidden p-6  duration-300 md:flex-row md:group-hover:scale-[0.90]'
 					)}>
 					{/* Title Area */}
-					<div
-						className={cl(
-							'flex items-center gap-2 text-white transition-transform duration-300',
-							animateText ? 'group-hover:translate-x-[10px]' : ''
-						)}>
+					<div className={cl('flex items-center gap-2 text-white transition-transform duration-300')}>
 						<span className={'font-[Monument] text-xl font-extrabold'}>{title}</span>
 						{subtitle && <span className={'text-xl font-normal tracking-wide'}>{subtitle}</span>}
 					</div>
 
 					{/* Tags */}
-					<div
-						className={cl(
-							'flex gap-2 transition-transform duration-300',
-							animateText ? 'group-hover:translate-x-[-10px]' : ''
-						)}>
+					<div className={cl('flex gap-2 transition-transform duration-300 flex-wrap')}>
 						{tags.map(tag => (
 							<span
 								key={tag}

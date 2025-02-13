@@ -1,14 +1,12 @@
 import Image from 'next/image';
 
-import {ProjectCard} from '@/components/common/ProjectCard';
-import {CASE_CONTENT, PROJECTS_LIST} from '@/utils/constants';
+import {CASE_CONTENT} from '@/utils/constants';
 
 import type {ReactNode} from 'react';
 
 export default async function WorkPage({params}: {params: Promise<{slug: string}>}): Promise<ReactNode> {
 	const {slug} = await params;
 	const content = CASE_CONTENT[slug as keyof typeof CASE_CONTENT];
-	const projectCardContent = PROJECTS_LIST.find(project => project.slug === slug);
 
 	return (
 		<div className={'mx-auto mt-8 max-w-[1400px] px-6 pb-[120px]'}>
@@ -87,7 +85,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					</div>
 				</div>
 			</div>
-			{projectCardContent && (
+			{/* {projectCardContent && (
 				<ProjectCard
 					{...projectCardContent}
 					href={content.projectLink}
@@ -96,7 +94,7 @@ export default async function WorkPage({params}: {params: Promise<{slug: string}
 					target={'_blank'}
 					hoverButtonTitle={'NEXT PROJECT'}
 				/>
-			)}
+			)} */}
 		</div>
 	);
 }
