@@ -46,6 +46,7 @@ export default function PongGame(): ReactNode {
 	// Game speed control - higher number = slower game
 	const UPDATE_INTERVAL = 50; // Update game every 50ms
 	const PREDICTION_INTERVAL = 500; // Update AI prediction every 500ms for more human-like behavior
+	const WIDTH = 26; // 26 cells
 
 	// Initialize game
 	const initGame = useCallback(() => {
@@ -161,8 +162,8 @@ export default function PongGame(): ReactNode {
 
 			// Check for potential collision with computer paddle before moving ball
 			const willCollideWithComputer =
-				newBallX >= 18 && // Ball x position will be at paddle x
-				newBallX + prev.ballSpeedX <= 19 && // Coming from left direction
+				newBallX >= WIDTH - 2 && // Ball x position will be at paddle x
+				newBallX + prev.ballSpeedX <= WIDTH - 1 && // Coming from left direction
 				newBallY >= prev.computerY - 0.5 && // Expanded collision area for better feeling
 				newBallY <= prev.computerY + 4.5 && // Expanded collision area for better feeling
 				prev.ballSpeedX > 0; // Moving toward computer paddle
@@ -182,7 +183,7 @@ export default function PongGame(): ReactNode {
 				// Only predict if the ball is moving toward the computer
 				if (newBallSpeedX > 0) {
 					// Calculate how many steps until the ball reaches the computer paddle
-					const stepsToReach = (19 - newBallX) / newBallSpeedX;
+					const stepsToReach = (WIDTH - 1 - newBallX) / newBallSpeedX;
 					// Predict where the ball will be at that point
 					predictedY = newBallY + newBallSpeedY * stepsToReach;
 
@@ -254,7 +255,7 @@ export default function PongGame(): ReactNode {
 			// Handle collision with computer paddle (right side)
 			if (willCollideWithComputer) {
 				// Move the ball to the paddle edge to prevent going through
-				newBallX = 17.9;
+				newBallX = WIDTH - 2.1;
 				// Bounce with increasing speed (gets faster with each hit)
 				newBallSpeedX = -Math.abs(newBallSpeedX) * 1.05;
 
@@ -283,7 +284,7 @@ export default function PongGame(): ReactNode {
 					// Reset paddle predictions
 					newLastPredictionTime = 0;
 				}
-			} else if (newBallX > 19) {
+			} else if (newBallX > WIDTH - 1) {
 				// Player scores
 				newPlayerScore++;
 				if (newPlayerScore >= 5) {
@@ -382,7 +383,7 @@ export default function PongGame(): ReactNode {
 			}
 
 			// Calculate game area dimensions (20x16 grid)
-			const gameWidth = 20 * gridSize;
+			const gameWidth = WIDTH * gridSize;
 			const gameHeight = 16 * gridSize;
 			const gameLeft = (canvas.width - gameWidth) / 2;
 			const gameTop = (canvas.height - gameHeight) / 2;
@@ -393,7 +394,12 @@ export default function PongGame(): ReactNode {
 
 			// Draw computer paddle (right)
 			ctx.fillStyle = '#FFD915';
-			ctx.fillRect(gameLeft + 19 * gridSize, gameTop + gameState.computerY * gridSize, gridSize, 4 * gridSize);
+			ctx.fillRect(
+				gameLeft + (WIDTH - 1) * gridSize,
+				gameTop + gameState.computerY * gridSize,
+				gridSize,
+				4 * gridSize
+			);
 
 			// Draw ball
 			ctx.fillStyle = '#FFD915';
