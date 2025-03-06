@@ -1,16 +1,16 @@
-import GridBackground from '@/components/common/GridBackground';
+import PongGame from '@/components/common/PongGame';
 
 import type {ReactNode} from 'react';
 
 export default function Home(): ReactNode {
 	return (
 		<main className={'relative '}>
-			<GridBackground />
+			<PongGame />
 
 			<div className={'relative flex h-[calc(100vh-128px)] flex-1 items-start justify-center md:items-center'}>
 				<h1
 					className={
-						'mb-[128px] mt-8 text-center text-[clamp(48px,8vw,80px)] leading-[clamp(40px,7vw,72px)] md:mt-0'
+						'mb-[128px] mt-8 text-center text-[clamp(48px,8vw,64px)] leading-[clamp(40px,7vw,56px)] md:mt-0'
 					}>
 					<span className={'font-[Monument] font-extrabold'}>{'MOM GONNA'}</span> {'TAKE CARE'}
 					<br />
