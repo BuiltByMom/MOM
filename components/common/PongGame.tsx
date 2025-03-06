@@ -13,7 +13,7 @@ type TGameState = {
 	ballSpeedY: number;
 	playerScore: number;
 	computerScore: number;
-	gameOver: boolean;
+	isGameOver: boolean;
 	paused: boolean;
 	winner: 'player' | 'computer' | null;
 	lastUpdateTime: number;
@@ -39,7 +39,7 @@ export default function PongGame(): ReactNode {
 		ballSpeedY: 0,
 		playerScore: 0,
 		computerScore: 0,
-		gameOver: false,
+		isGameOver: false,
 		paused: false,
 		winner: null,
 		lastUpdateTime: 0,
@@ -64,7 +64,7 @@ export default function PongGame(): ReactNode {
 			ballSpeedY: Math.random() > 0.5 ? 0.3 : -0.3,
 			playerScore: 0,
 			computerScore: 0,
-			gameOver: false,
+			isGameOver: false,
 			paused: false,
 			winner: null,
 			lastUpdateTime: Date.now(),
@@ -77,13 +77,13 @@ export default function PongGame(): ReactNode {
 
 	// Toggle pause state
 	const togglePause = useCallback(() => {
-		if (!gameState.gameOver) {
+		if (!gameState.isGameOver) {
 			setGameState(prev => ({
 				...prev,
 				paused: !prev.paused
 			}));
 		}
-	}, [gameState.gameOver]);
+	}, [gameState.isGameOver]);
 
 	// Handle key presses for player paddle movement
 	useEffect(() => {
@@ -100,8 +100,8 @@ export default function PongGame(): ReactNode {
 				return;
 			}
 
-			if (gameState.paused || gameState.gameOver) {
-				if (e.key === 'r' && gameState.gameOver) {
+			if (gameState.paused || gameState.isGameOver) {
+				if (e.key === 'r' && gameState.isGameOver) {
 					// Restart game when 'r' is pressed if game is over
 					initGame();
 				}
@@ -127,11 +127,11 @@ export default function PongGame(): ReactNode {
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [isGameStarted, gameState.gameOver, gameState.paused, initGame, togglePause]);
+	}, [isGameStarted, gameState.isGameOver, gameState.paused, initGame, togglePause]);
 
 	// Game loop with throttled update
 	const updateGame = useCallback(() => {
-		if (gameState.gameOver || gameState.paused) {
+		if (gameState.isGameOver || gameState.paused) {
 			return;
 		}
 
@@ -149,7 +149,7 @@ export default function PongGame(): ReactNode {
 			let newBallSpeedY = prev.ballSpeedY;
 			let newPlayerScore = prev.playerScore;
 			let newComputerScore = prev.computerScore;
-			let newGameOver = prev.gameOver;
+			let isNewGameOver = prev.isGameOver;
 			let newWinner = prev.winner;
 			let newComputerY = prev.computerY;
 			let newTargetComputerY = prev.targetComputerY;
@@ -310,7 +310,7 @@ export default function PongGame(): ReactNode {
 				// Computer scores
 				newComputerScore++;
 				if (newComputerScore >= 5) {
-					newGameOver = true;
+					isNewGameOver = true;
 					newWinner = 'computer';
 				} else {
 					// Reset ball position
@@ -325,7 +325,7 @@ export default function PongGame(): ReactNode {
 				// Player scores
 				newPlayerScore++;
 				if (newPlayerScore >= 5) {
-					newGameOver = true;
+					isNewGameOver = true;
 					newWinner = 'player';
 				} else {
 					// Reset ball position
@@ -347,14 +347,14 @@ export default function PongGame(): ReactNode {
 				computerY: newComputerY,
 				playerScore: newPlayerScore,
 				computerScore: newComputerScore,
-				gameOver: newGameOver,
+				isGameOver: isNewGameOver,
 				winner: newWinner,
 				lastUpdateTime: currentTime,
 				targetComputerY: newTargetComputerY,
 				lastPredictionTime: newLastPredictionTime
 			};
 		});
-	}, [gameState.gameOver, gameState.paused, gameState.lastUpdateTime, UPDATE_INTERVAL]);
+	}, [gameState.isGameOver, gameState.paused, gameState.lastUpdateTime, UPDATE_INTERVAL]);
 
 	// Canvas setup and draw
 	useEffect(() => {
@@ -453,7 +453,7 @@ export default function PongGame(): ReactNode {
 			ctx.fillText(`${gameState.playerScore} - ${gameState.computerScore}`, canvas.width / 2, gameTop + 40);
 
 			// Draw game over message if needed
-			if (gameState.gameOver) {
+			if (gameState.isGameOver) {
 				ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
 				ctx.fillRect(gameLeft + 6 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
 
@@ -486,7 +486,7 @@ export default function PongGame(): ReactNode {
 
 		// Game loop - the draw rate is faster than the update rate
 		const animate = (): void => {
-			if (isGameStarted && !gameState.gameOver && !gameState.paused) {
+			if (isGameStarted && !gameState.isGameOver && !gameState.paused) {
 				updateGame();
 			}
 			drawGame();
