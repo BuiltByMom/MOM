@@ -51,7 +51,7 @@ export default function PongGame(): ReactNode {
 	// Game speed control - higher number = slower game
 	const UPDATE_INTERVAL = 50; // Update game every 50ms
 	const PREDICTION_INTERVAL = 500; // Update AI prediction every 500ms for more human-like behavior
-	const WIDTH = 26; // 26 cells
+	const WIDTH = 22; // 26 cells
 
 	// Initialize game
 	const initGame = useCallback(() => {
@@ -455,7 +455,7 @@ export default function PongGame(): ReactNode {
 			// Draw game over message if needed
 			if (gameState.gameOver) {
 				ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-				ctx.fillRect(gameLeft + 8 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
+				ctx.fillRect(gameLeft + 6 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
 
 				ctx.fillStyle = '#fff';
 				ctx.font = '24px Arial';
@@ -471,7 +471,7 @@ export default function PongGame(): ReactNode {
 			// Draw pause message if game is paused
 			if (gameState.paused) {
 				ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-				ctx.fillRect(gameLeft + 8 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
+				ctx.fillRect(gameLeft + 6 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
 
 				ctx.fillStyle = '#fff';
 				ctx.font = '24px Arial';
