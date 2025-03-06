@@ -25,9 +25,14 @@ export default function PongGame(): ReactNode {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const requestIdRef = useRef<number>(0);
 	const [gridSize, setGridSize] = useState<number>(64);
+
+	const paddleHeight = 4; // 4 cells
+	const initialPlayerY = Math.floor(Math.random() * (15 - paddleHeight));
+	const initialComputerY = Math.floor(Math.random() * (15 - paddleHeight));
+
 	const [gameState, setGameState] = useState<TGameState>({
-		playerY: 0,
-		computerY: 0,
+		playerY: initialPlayerY,
+		computerY: initialComputerY,
 		ballX: 0,
 		ballY: 0,
 		ballSpeedX: 0,
@@ -50,11 +55,8 @@ export default function PongGame(): ReactNode {
 
 	// Initialize game
 	const initGame = useCallback(() => {
-		const paddleHeight = 4; // 4 cells
-		const initialComputerY = Math.floor(Math.random() * (15 - paddleHeight));
-
 		setGameState({
-			playerY: Math.floor(Math.random() * (15 - paddleHeight)),
+			playerY: initialPlayerY,
 			computerY: initialComputerY,
 			ballX: 10,
 			ballY: 8,
@@ -70,6 +72,7 @@ export default function PongGame(): ReactNode {
 			lastPredictionTime: 0
 		});
 		setIsGameStarted(true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Toggle pause state
@@ -152,21 +155,51 @@ export default function PongGame(): ReactNode {
 			let newTargetComputerY = prev.targetComputerY;
 			let newLastPredictionTime = prev.lastPredictionTime;
 
-			// Check for potential collision with player paddle before moving ball
-			const willCollideWithPlayer =
-				newBallX <= 1 && // Ball x position will be at paddle x
-				newBallX + prev.ballSpeedX >= 0 && // Coming from right direction
-				newBallY >= prev.playerY - 0.5 && // Expanded collision area for better feeling
-				newBallY <= prev.playerY + 4.5 && // Expanded collision area for better feeling
-				prev.ballSpeedX < 0; // Moving toward player paddle
+			// Continuous collision detection for player paddle
+			// Check if ball trajectory intersects with paddle during this frame
+			const willCollideWithPlayer = (() => {
+				// Only check if ball is moving toward player paddle
+				if (prev.ballSpeedX >= 0) {
+					return false;
+				}
 
-			// Check for potential collision with computer paddle before moving ball
-			const willCollideWithComputer =
-				newBallX >= WIDTH - 2 && // Ball x position will be at paddle x
-				newBallX + prev.ballSpeedX <= WIDTH - 1 && // Coming from left direction
-				newBallY >= prev.computerY - 0.5 && // Expanded collision area for better feeling
-				newBallY <= prev.computerY + 4.5 && // Expanded collision area for better feeling
-				prev.ballSpeedX > 0; // Moving toward computer paddle
+				// Calculate time until x collision with player paddle (x=1)
+				const timeToXCollision = (1 - prev.ballX) / prev.ballSpeedX;
+
+				// If timeToXCollision is negative or greater than 1, no collision in this frame
+				if (timeToXCollision < 0 || timeToXCollision > 1) {
+					return false;
+				}
+
+				// Calculate y position at collision time
+				const yAtCollision = prev.ballY + prev.ballSpeedY * timeToXCollision;
+
+				// Check if y position is within paddle range (with padding)
+				return yAtCollision >= prev.playerY - 0.5 && yAtCollision <= prev.playerY + 4.5;
+			})();
+
+			// Continuous collision detection for computer paddle
+			// Check if ball trajectory intersects with paddle during this frame
+			const willCollideWithComputer = (() => {
+				// Only check if ball is moving toward computer paddle
+				if (prev.ballSpeedX <= 0) {
+					return false;
+				}
+
+				// Calculate time until x collision with computer paddle (x=WIDTH-2)
+				const timeToXCollision = (WIDTH - 2 - prev.ballX) / prev.ballSpeedX;
+
+				// If timeToXCollision is negative or greater than 1, no collision in this frame
+				if (timeToXCollision < 0 || timeToXCollision > 1) {
+					return false;
+				}
+
+				// Calculate y position at collision time
+				const yAtCollision = prev.ballY + prev.ballSpeedY * timeToXCollision;
+
+				// Check if y position is within paddle range (with padding)
+				return yAtCollision >= prev.computerY - 0.5 && yAtCollision <= prev.computerY + 4.5;
+			})();
 
 			// More human-like computer paddle AI
 			// Only recalculate prediction occasionally to make movement appear more human
@@ -373,26 +406,17 @@ export default function PongGame(): ReactNode {
 				ctx.stroke();
 			}
 
-			if (!isGameStarted) {
-				// Draw "Press any key to start" message
-				ctx.fillStyle = '#000';
-				ctx.font = '24px Arial';
-				ctx.textAlign = 'center';
-				ctx.fillText('Press any key to start', canvas.width / 2, canvas.height / 2);
-				return;
-			}
-
-			// Calculate game area dimensions (20x16 grid)
+			// Calculate game area dimensions
 			const gameWidth = WIDTH * gridSize;
 			const gameHeight = 16 * gridSize;
 			const gameLeft = (canvas.width - gameWidth) / 2;
 			const gameTop = (canvas.height - gameHeight) / 2;
 
-			// Draw player paddle (left)
+			// Draw player paddle (left) - even when game is not started
 			ctx.fillStyle = '#FFD915';
 			ctx.fillRect(gameLeft + 0 * gridSize, gameTop + gameState.playerY * gridSize, gridSize, 4 * gridSize);
 
-			// Draw computer paddle (right)
+			// Draw computer paddle (right) - even when game is not started
 			ctx.fillStyle = '#FFD915';
 			ctx.fillRect(
 				gameLeft + (WIDTH - 1) * gridSize,
@@ -401,7 +425,11 @@ export default function PongGame(): ReactNode {
 				4 * gridSize
 			);
 
-			// Draw ball
+			if (!isGameStarted) {
+				return;
+			}
+
+			// Draw ball - only when game is started
 			ctx.fillStyle = '#FFD915';
 			ctx.fillRect(
 				gameLeft + gameState.ballX * gridSize,
@@ -419,7 +447,7 @@ export default function PongGame(): ReactNode {
 			// Draw game over message if needed
 			if (gameState.gameOver) {
 				ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-				ctx.fillRect(gameLeft + 5 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
+				ctx.fillRect(gameLeft + 8 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
 
 				ctx.fillStyle = '#fff';
 				ctx.font = '24px Arial';
@@ -435,7 +463,7 @@ export default function PongGame(): ReactNode {
 			// Draw pause message if game is paused
 			if (gameState.paused) {
 				ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-				ctx.fillRect(gameLeft + 5 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
+				ctx.fillRect(gameLeft + 8 * gridSize, gameTop + 2 * gridSize, 10 * gridSize, 4 * gridSize);
 
 				ctx.fillStyle = '#fff';
 				ctx.font = '24px Arial';
