@@ -109,16 +109,16 @@ export default function PongGame(): ReactNode {
 			}
 
 			if (e.key === 'ArrowUp' || e.key === 'w') {
-				// Move paddle up
+				// Move paddle up by 1 cell
 				setGameState(prev => ({
 					...prev,
-					playerY: Math.max(0, prev.playerY - 0.7)
+					playerY: Math.max(0, Math.floor(prev.playerY) - 1)
 				}));
 			} else if (e.key === 'ArrowDown' || e.key === 's') {
-				// Move paddle down
+				// Move paddle down by 1 cell
 				setGameState(prev => ({
 					...prev,
-					playerY: Math.min(16 - 4, prev.playerY + 0.7)
+					playerY: Math.min(12, Math.floor(prev.playerY) + 1)
 				}));
 			}
 		};
@@ -246,7 +246,8 @@ export default function PongGame(): ReactNode {
 						newTargetComputerY = 6; // Lazy center-ish position
 					} else {
 						// Target the center of the paddle to the predicted ball position
-						newTargetComputerY = Math.max(0, Math.min(12, predictedY - 2)); // Clamp to valid range
+						// Quantize to align with grid cells
+						newTargetComputerY = Math.max(0, Math.min(12, Math.floor(predictedY - 2)));
 					}
 				} else if (Math.abs(newComputerY - 6) > 3) {
 					// Ball is moving away - occasionally drift towards center
@@ -258,9 +259,12 @@ export default function PongGame(): ReactNode {
 			const distanceToTarget = newTargetComputerY - newComputerY;
 
 			if (Math.abs(distanceToTarget) > 0.1) {
-				// Smooth, variable movement speed - faster when further from target
-				const speed = Math.min(0.2, Math.abs(distanceToTarget) * 0.1);
-				newComputerY += distanceToTarget > 0 ? speed : -speed;
+				// Quantize computer paddle movement to align with grid cells
+				if (distanceToTarget > 0) {
+					newComputerY = Math.min(newTargetComputerY, Math.floor(newComputerY) + 1);
+				} else {
+					newComputerY = Math.max(newTargetComputerY, Math.floor(newComputerY) - 1);
+				}
 			}
 
 			// Ball bounces off top and bottom walls
@@ -413,14 +417,18 @@ export default function PongGame(): ReactNode {
 			const gameTop = (canvas.height - gameHeight) / 2;
 
 			// Draw player paddle (left) - even when game is not started
+			// Force integer position for exact grid alignment
+			const playerYAligned = Math.floor(gameState.playerY);
 			ctx.fillStyle = '#FFD915';
-			ctx.fillRect(gameLeft + 0 * gridSize, gameTop + gameState.playerY * gridSize, gridSize, 4 * gridSize);
+			ctx.fillRect(gameLeft + 0 * gridSize, gameTop + playerYAligned * gridSize, gridSize, 4 * gridSize);
 
 			// Draw computer paddle (right) - even when game is not started
+			// Force integer position for exact grid alignment
+			const computerYAligned = Math.floor(gameState.computerY);
 			ctx.fillStyle = '#FFD915';
 			ctx.fillRect(
 				gameLeft + (WIDTH - 1) * gridSize,
-				gameTop + gameState.computerY * gridSize,
+				gameTop + computerYAligned * gridSize,
 				gridSize,
 				4 * gridSize
 			);
